@@ -25,6 +25,8 @@ PRODUCT_MANUFACTURER := Xiaomi
 PRODUCT_MODEL := Redmi Note 12 5G
 PRODUCT_NAME := lineage_stone
 
+PREBUILT_KERNEL := true
+
 # Matrixx
 MATRIXX_BUILD_TYPE := Official
 MATRIXX_MAINTAINER := Mayuresh & Khnome
