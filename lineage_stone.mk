@@ -25,6 +25,19 @@ PRODUCT_MANUFACTURER := Xiaomi
 PRODUCT_MODEL := Redmi Note 12 5G
 PRODUCT_NAME := lineage_stone
 
+# Matrixx
+MATRIXX_BUILD_TYPE := Official
+MATRIXX_MAINTAINER := Mayuresh & Khnome
+MATRIXX_CHIPSET := SM6375
+MATRIXX_BATTERY := 5000mah
+MATRIXX_DISPLAY := 1080x2400
+
+# To include Gapps 
+WITH_GMS := true
+ 
+# To Build Pixel launcher
+TARGET_INCLUDE_NEXUS := true
+
 PRODUCT_GMS_CLIENTID_BASE := android-xiaomi
 
 PRODUCT_BUILD_PROP_OVERRIDES += \
