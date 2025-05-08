@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="@string/fastcharge_category_title">
-        <ListPreference
+        <SwitchPreference
             android:key="fastcharge_normal"
             android:title="@string/fastcharge_normal_title"
-            android:entries="@array/fastcharge_modes_entries"
-            android:entryValues="@array/fastcharge_modes_values"
-            android:defaultValue="2"
+            android:summary="@string/fastcharge_normal_summary"
             android:persistent="true" />
             
         <SwitchPreference

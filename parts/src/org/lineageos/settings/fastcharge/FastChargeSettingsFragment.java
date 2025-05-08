@@ -20,7 +20,6 @@ import android.content.Context;
 import android.os.Bundle;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragment;
-import androidx.preference.ListPreference;
 import androidx.preference.SwitchPreference;
 
 import org.lineageos.settings.R;
@@ -31,7 +30,7 @@ public class FastChargeSettingsFragment extends PreferenceFragment
     private static final String KEY_NORMAL_CHARGER = "fastcharge_normal";
     private static final String KEY_USB_CHARGER = "fastcharge_usb";
 
-    private ListPreference mNormalChargerPreference;
+    private SwitchPreference mNormalChargerPreference;
     private SwitchPreference mUsbChargerPreference;
     private FastChargeUtils mFastChargeUtils;
 
@@ -41,18 +40,17 @@ public class FastChargeSettingsFragment extends PreferenceFragment
         
         mFastChargeUtils = new FastChargeUtils(getActivity());
         
-        mNormalChargerPreference = (ListPreference) findPreference(KEY_NORMAL_CHARGER);
+        mNormalChargerPreference = (SwitchPreference) findPreference(KEY_NORMAL_CHARGER);
         mUsbChargerPreference = (SwitchPreference) findPreference(KEY_USB_CHARGER);
 
+        // Check if nodes exist and are accessible
         boolean normalChargeSupported = mFastChargeUtils.isNodeAccessible(FastChargeUtils.NORMAL_CHARGE_NODE);
         boolean usbChargeSupported = mFastChargeUtils.isNodeAccessible(FastChargeUtils.USB_CHARGE_NODE);
 
         if (mNormalChargerPreference != null) {
             mNormalChargerPreference.setEnabled(normalChargeSupported);
             if (normalChargeSupported) {
-                int mode = mFastChargeUtils.getNormalFastChargeMode();
-                mNormalChargerPreference.setValue(String.valueOf(mode));
-                updateNormalChargeSummary(mode);
+                mNormalChargerPreference.setChecked(mFastChargeUtils.isNormalFastChargeEnabled());
                 mNormalChargerPreference.setOnPreferenceChangeListener(this);
             } else {
                 mNormalChargerPreference.setSummary(R.string.fastcharge_normal_unavailable);
@@ -70,30 +68,19 @@ public class FastChargeSettingsFragment extends PreferenceFragment
         }
     }
 
-    private void updateNormalChargeSummary(int mode) {
-        String[] entries = getResources().getStringArray(R.array.fastcharge_modes_entries);
-        if (mode >= 0 && mode < entries.length) {
-            mNormalChargerPreference.setSummary(entries[mode]);
-        } else {
-            mNormalChargerPreference.setSummary(R.string.fastcharge_normal_summary);
-        }
-    }
-
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         final String key = preference.getKey();
+        final boolean value = (Boolean) newValue;
         
         switch (key) {
             case KEY_NORMAL_CHARGER:
-                String mode = (String) newValue;
-                mFastChargeUtils.setNormalFastChargeMode(mode);
-                updateNormalChargeSummary(Integer.parseInt(mode));
+                mFastChargeUtils.enableNormalFastCharge(value);
                 return true;
             case KEY_USB_CHARGER:
-                boolean value = (Boolean) newValue;
                 mFastChargeUtils.enableUsbFastCharge(value);
                 return true;
         }
         return false;
     }
-}    
+}
