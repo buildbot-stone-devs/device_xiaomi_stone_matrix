@@ -102,25 +102,19 @@ BOARD_KERNEL_CMDLINE := \
     ip6table_raw.raw_before_defrag=1 \
     firmware_class.path=/vendor/firmware
 
-# Prebuilt Kernel
-ifeq ($(PREBUILT_KERNEL),true)
-BOARD_KERNEL_SEPARATED_DTBO := true
-TARGET_NO_KERNEL_OVERRIDE := true
-TARGET_NO_KERNEL := false
+TARGET_KERNEL_CONFIG := holi_QGKI
 TARGET_KERNEL_SOURCE := $(DEVICE_PATH)-kernel/kernel-headers
-BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)-kernel/dtbo.img
-TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)-kernel/kernel
-TARGET_PREBUILT_DTB := $(DEVICE_PATH)-kernel/dtb.img
-PRODUCT_COPY_FILES += \
-    $(DEVICE_PATH)-kernel/dtb.img:$(TARGET_COPY_OUT)/dtb.img \
-    $(DEVICE_PATH)-kernel/kernel:kernel
-else
-TARGET_KERNEL_SOURCE := kernel/xiaomi/stone
-TARGET_KERNEL_CONFIG := stone_defconfig
 TARGET_KERNEL_NO_GCC := true
-BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
-endif
+TARGET_KERNEL_VERSION := 5.4
 
+# Prebuilt Kernel
+TARGET_NO_KERNEL_OVERRIDE := true
+BOARD_KERNEL_BINARIES := kernel
+BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)-kernel/dtbo.img
+BOARD_PREBUILT_DTBIMAGE_DIR := $(DEVICE_PATH)-kernel/dtb
+PRODUCT_COPY_FILES += \
+    $(DEVICE_PATH)-kernel/kernel:kernel
+    
 # Kernel modules
 VENDOR_MODULES_PATH := $(DEVICE_PATH)-kernel/vendor-modules
 BOARD_VENDOR_KERNEL_MODULES := $(wildcard $(VENDOR_MODULES_PATH)/*.ko)
